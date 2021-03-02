@@ -11,41 +11,41 @@ import com.example.motivation.infra.MotivationConstants
 import com.example.motivation.infra.SecurityPreferences
 import kotlinx.android.synthetic.main.activity_splash.*
 
- class SplashActivity() : AppCompatActivity(), View.OnClickListener {
+class SplashActivity() : AppCompatActivity(), View.OnClickListener {
 
-     private lateinit var mSecurityPreferences: SecurityPreferences
+    private val  mSecurityPreferences by lazy { SecurityPreferences(context = applicationContext) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        mSecurityPreferences = SecurityPreferences(this)
-
-        if (supportActionBar !=null){
-            supportActionBar!!.hide() 
+        if (supportActionBar != null) {
+            supportActionBar!!.hide()
         }
         buttonSave.setOnClickListener(this)
 
-        val shared = this.getSharedPreferences("motivation", Context.MODE_PRIVATE)
-        shared.edit().putString("key","value").apply()
     }
 
     override fun onClick(view: View) {
-       val id = view.id
-        if (id == R.id.buttonSave){
+        val id = view.id
+        if (id == R.id.buttonSave) {
             handleSave()
         }
-
     }
-    private fun handleSave(){
+
+    private fun handleSave() {
         val name = editName.text.toString()
-        if (name != ""){
-           mSecurityPreferences.storeString(MotivationConstants.KEY.PERSON_NAME,name)
+        if (name != EMPTY) {
+            mSecurityPreferences.storeString(MotivationConstants.KEY.PERSON_NAME, name)
             startActivity(Intent(this, MainActivity::class.java))
         } else {
-            Toast.makeText(this, "Informe seu nome!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, NAME_ERROR_TEXT, Toast.LENGTH_SHORT).show()
         }
     }
 
+    private companion object {
+        private const val EMPTY = ""
+        private const val NAME_ERROR_TEXT =""
+    }
 }
 
