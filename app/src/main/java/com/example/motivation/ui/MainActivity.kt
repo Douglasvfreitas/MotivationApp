@@ -6,16 +6,27 @@ import android.view.View
 import com.example.motivation.R
 import com.example.motivation.infra.MotivationConstants
 import com.example.motivation.infra.SecurityPreferences
+import com.example.motivation.repository.Mock
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
+
     private val mSecurityPreferences by lazy { SecurityPreferences(context = applicationContext) }
+
+    private var mPhraseFilter: Int = MotivationConstants.PHRASEFILTER.ALL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if (supportActionBar != null){
+            supportActionBar!!.hide()
+        }
+
         textName.text = mSecurityPreferences.getString(MotivationConstants.KEY.PERSON_NAME)
+
+        allPhrase.setColorFilter(resources.getColor(R.color.colorAccent))
+        handleNewPhrase()
 
         buttonNewPhase.setOnClickListener(this)
         allPhrase.setOnClickListener(this)
@@ -44,18 +55,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when (id) {
             R.id.allPhrase -> {
                 allPhrase.setColorFilter(resources.getColor(R.color.colorAccent))
+                mPhraseFilter = MotivationConstants.PHRASEFILTER.ALL
             }
             R.id.happyPhrase -> {
                 happyPhrase.setColorFilter(resources.getColor(R.color.colorAccent))
+                mPhraseFilter = MotivationConstants.PHRASEFILTER.HAPPY
             }
             R.id.morningPhrase -> {
                 morningPhrase.setColorFilter(resources.getColor(R.color.colorAccent))
-
+                mPhraseFilter = MotivationConstants.PHRASEFILTER.MORNING
             }
         }
     }
 
     private fun handleNewPhrase() {
-        //TODO
+        textPhrase.text = Mock().getPhrase(mPhraseFilter)
     }
 }
