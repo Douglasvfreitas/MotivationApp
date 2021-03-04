@@ -45,7 +45,7 @@ class SplashActivity() : AppCompatActivity(), View.OnClickListener {
 
     private companion object {
         private const val EMPTY = ""
-        private const val NAME_ERROR_TEXT =""
+        private const val NAME_ERROR_TEXT ="Por favor insira seu nome!"
     }
 }
 
